@@ -1,0 +1,821 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="testModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="buyin">
+          <Key>
+            <PropertyRef Name="进货编号" />
+          </Key>
+          <Property Name="进货编号" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="供应商电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="进货时间" Type="datetime" Nullable="false" />
+          <Property Name="操作人员" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品编号" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="客户电话" />
+          </Key>
+          <Property Name="客户电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="客户全称" Type="nvarchar" MaxLength="50" />
+          <Property Name="会员" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="goods">
+          <Key>
+            <PropertyRef Name="商品编号" />
+          </Key>
+          <Property Name="商品编号" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="商品名称" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品价格" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="供应商电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品数量" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kucun">
+          <Key>
+            <PropertyRef Name="商品名称" />
+          </Key>
+          <Property Name="商品名称" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="数量" Type="int" />
+        </EntityType>
+        <EntityType Name="MenuList">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="MenuName" Type="varchar" MaxLength="255" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="MenuEnName" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Register">
+          <Key>
+            <PropertyRef Name="account" />
+          </Key>
+          <Property Name="account" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="return">
+          <Key>
+            <PropertyRef Name="退货编号" />
+          </Key>
+          <Property Name="退货编号" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="供应商电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="退货时间" Type="smalldatetime" Nullable="false" />
+          <Property Name="操作人员" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品编号" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sale">
+          <Key>
+            <PropertyRef Name="售货编号" />
+          </Key>
+          <Property Name="售货编号" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="客户电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="销售时间" Type="smalldatetime" Nullable="false" />
+          <Property Name="操作人员" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品编号" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="salesreturn">
+          <Key>
+            <PropertyRef Name="销售退货编号" />
+          </Key>
+          <Property Name="销售退货编号" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="客户电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="退货时间" Type="smalldatetime" Nullable="false" />
+          <Property Name="操作人员" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="商品编号" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="供应商电话" />
+          </Key>
+          <Property Name="供应商电话" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="供应商全称" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“test.dbo.testvue”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="testvue">
+          <Property Name="日期" Type="varchar" MaxLength="255" />
+          <Property Name="姓名" Type="varchar" MaxLength="255" />
+          <Property Name="地址" Type="varchar" MaxLength="255" />
+        </EntityType>-->
+        <Association Name="FK_buyin_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_buyin_Register1">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_buyin_supplier">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_goods_supplier1">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="goods" Type="Self.goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="goods">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_supplier">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="客户电话" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="客户电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="客户电话" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="客户电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testModel1StoreContainer">
+          <EntitySet Name="buyin" EntityType="Self.buyin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="goods" EntityType="Self.goods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="kucun" EntityType="Self.kucun" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuList" EntityType="Self.MenuList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Register" EntityType="Self.Register" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="return" EntityType="Self.return" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sale" EntityType="Self.sale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="salesreturn" EntityType="Self.salesreturn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="supplier" EntityType="Self.supplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_buyin_goods1" Association="Self.FK_buyin_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_buyin_Register1" Association="Self.FK_buyin_Register1">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_buyin_supplier" Association="Self.FK_buyin_supplier">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_goods_supplier1" Association="Self.FK_goods_supplier1">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="goods" EntitySet="goods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_goods1" Association="Self.FK_return_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_Register" Association="Self.FK_return_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_supplier" Association="Self.FK_return_supplier">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_customer" Association="Self.FK_sale_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_goods1" Association="Self.FK_sale_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_Register" Association="Self.FK_sale_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_customer" Association="Self.FK_salesreturn_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_goods1" Association="Self.FK_salesreturn_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_Register" Association="Self.FK_salesreturn_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="buyin">
+          <Key>
+            <PropertyRef Name="进货编号" />
+          </Key>
+          <Property Name="进货编号" Type="Guid" Nullable="false" />
+          <Property Name="供应商电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="进货时间" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="操作人员" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="商品编号" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="goods" Relationship="Self.FK_buyin_goods1" FromRole="buyin" ToRole="goods" />
+          <NavigationProperty Name="Register" Relationship="Self.FK_buyin_Register1" FromRole="buyin" ToRole="Register" />
+          <NavigationProperty Name="supplier" Relationship="Self.FK_buyin_supplier" FromRole="buyin" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="客户电话" />
+          </Key>
+          <Property Name="客户电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="客户全称" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="会员" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="sale" Relationship="Self.FK_sale_customer" FromRole="customer" ToRole="sale" />
+          <NavigationProperty Name="salesreturn" Relationship="Self.FK_salesreturn_customer" FromRole="customer" ToRole="salesreturn" />
+        </EntityType>
+        <EntityType Name="goods">
+          <Key>
+            <PropertyRef Name="商品编号" />
+          </Key>
+          <Property Name="商品编号" Type="Guid" Nullable="false" />
+          <Property Name="商品名称" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="商品价格" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="供应商电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="商品数量" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="buyin" Relationship="Self.FK_buyin_goods1" FromRole="goods" ToRole="buyin" />
+          <NavigationProperty Name="supplier" Relationship="Self.FK_goods_supplier1" FromRole="goods" ToRole="supplier" />
+          <NavigationProperty Name="return" Relationship="Self.FK_return_goods1" FromRole="goods" ToRole="return" />
+          <NavigationProperty Name="sale" Relationship="Self.FK_sale_goods1" FromRole="goods" ToRole="sale" />
+          <NavigationProperty Name="salesreturn" Relationship="Self.FK_salesreturn_goods1" FromRole="goods" ToRole="salesreturn" />
+        </EntityType>
+        <EntityType Name="MenuList">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="Int32" Nullable="false" />
+          <Property Name="MenuName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="MenuEnName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Register">
+          <Key>
+            <PropertyRef Name="account" />
+          </Key>
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="buyin" Relationship="Self.FK_buyin_Register1" FromRole="Register" ToRole="buyin" />
+          <NavigationProperty Name="return" Relationship="Self.FK_return_Register" FromRole="Register" ToRole="return" />
+          <NavigationProperty Name="sale" Relationship="Self.FK_sale_Register" FromRole="Register" ToRole="sale" />
+          <NavigationProperty Name="salesreturn" Relationship="Self.FK_salesreturn_Register" FromRole="Register" ToRole="salesreturn" />
+        </EntityType>
+        <EntityType Name="return">
+          <Key>
+            <PropertyRef Name="退货编号" />
+          </Key>
+          <Property Name="退货编号" Type="Guid" Nullable="false" />
+          <Property Name="供应商电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="退货时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="操作人员" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="商品编号" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="goods" Relationship="Self.FK_return_goods1" FromRole="return" ToRole="goods" />
+          <NavigationProperty Name="Register" Relationship="Self.FK_return_Register" FromRole="return" ToRole="Register" />
+          <NavigationProperty Name="supplier" Relationship="Self.FK_return_supplier" FromRole="return" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="sale">
+          <Key>
+            <PropertyRef Name="售货编号" />
+          </Key>
+          <Property Name="售货编号" Type="Guid" Nullable="false" />
+          <Property Name="客户电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="销售时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="操作人员" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="商品编号" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_sale_customer" FromRole="sale" ToRole="customer" />
+          <NavigationProperty Name="goods" Relationship="Self.FK_sale_goods1" FromRole="sale" ToRole="goods" />
+          <NavigationProperty Name="Register" Relationship="Self.FK_sale_Register" FromRole="sale" ToRole="Register" />
+        </EntityType>
+        <EntityType Name="salesreturn">
+          <Key>
+            <PropertyRef Name="销售退货编号" />
+          </Key>
+          <Property Name="销售退货编号" Type="Guid" Nullable="false" />
+          <Property Name="客户电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="退货时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="操作人员" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="商品编号" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_salesreturn_customer" FromRole="salesreturn" ToRole="customer" />
+          <NavigationProperty Name="goods" Relationship="Self.FK_salesreturn_goods1" FromRole="salesreturn" ToRole="goods" />
+          <NavigationProperty Name="Register" Relationship="Self.FK_salesreturn_Register" FromRole="salesreturn" ToRole="Register" />
+        </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="供应商电话" />
+          </Key>
+          <Property Name="供应商电话" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="供应商全称" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="buyin" Relationship="Self.FK_buyin_supplier" FromRole="supplier" ToRole="buyin" />
+          <NavigationProperty Name="goods" Relationship="Self.FK_goods_supplier1" FromRole="supplier" ToRole="goods" />
+          <NavigationProperty Name="return" Relationship="Self.FK_return_supplier" FromRole="supplier" ToRole="return" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="kucun">
+          <Key>
+            <PropertyRef Name="商品名称" />
+          </Key>
+          <Property Name="商品名称" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="数量" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_buyin_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_buyin_Register1">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_buyin_supplier">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="buyin" Type="Self.buyin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="buyin">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="客户电话" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="客户电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="客户电话" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="客户电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_goods_supplier1">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="goods" Type="Self.goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="goods">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_goods1">
+          <End Role="goods" Type="Self.goods" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="goods">
+              <PropertyRef Name="商品编号" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="商品编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="sale" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="sale">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturn_Register">
+          <End Role="Register" Type="Self.Register" Multiplicity="1" />
+          <End Role="salesreturn" Type="Self.salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Register">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="操作人员" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_supplier">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="1" />
+          <End Role="return" Type="Self.return" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="供应商电话" />
+            </Principal>
+            <Dependent Role="return">
+              <PropertyRef Name="供应商电话" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="buyin" EntityType="Self.buyin" />
+          <EntitySet Name="customer" EntityType="Self.customer" />
+          <EntitySet Name="goods" EntityType="Self.goods" />
+          <EntitySet Name="MenuList" EntityType="Self.MenuList" />
+          <EntitySet Name="Register" EntityType="Self.Register" />
+          <EntitySet Name="return" EntityType="Self.return" />
+          <EntitySet Name="sale" EntityType="Self.sale" />
+          <EntitySet Name="salesreturn" EntityType="Self.salesreturn" />
+          <EntitySet Name="supplier" EntityType="Self.supplier" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="kucun" EntityType="Self.kucun" />
+          <AssociationSet Name="FK_buyin_goods1" Association="Self.FK_buyin_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_buyin_Register1" Association="Self.FK_buyin_Register1">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_buyin_supplier" Association="Self.FK_buyin_supplier">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="buyin" EntitySet="buyin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_customer" Association="Self.FK_sale_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_customer" Association="Self.FK_salesreturn_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_goods_supplier1" Association="Self.FK_goods_supplier1">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="goods" EntitySet="goods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_goods1" Association="Self.FK_return_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_goods1" Association="Self.FK_sale_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_goods1" Association="Self.FK_salesreturn_goods1">
+            <End Role="goods" EntitySet="goods" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_Register" Association="Self.FK_return_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_Register" Association="Self.FK_sale_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="sale" EntitySet="sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturn_Register" Association="Self.FK_salesreturn_Register">
+            <End Role="Register" EntitySet="Register" />
+            <End Role="salesreturn" EntitySet="salesreturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_supplier" Association="Self.FK_return_supplier">
+            <End Role="supplier" EntitySet="supplier" />
+            <End Role="return" EntitySet="return" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testModel1StoreContainer" CdmEntityContainer="testEntities1">
+          <EntitySetMapping Name="buyin">
+            <EntityTypeMapping TypeName="testModel1.buyin">
+              <MappingFragment StoreEntitySet="buyin">
+                <ScalarProperty Name="进货编号" ColumnName="进货编号" />
+                <ScalarProperty Name="供应商电话" ColumnName="供应商电话" />
+                <ScalarProperty Name="进货时间" ColumnName="进货时间" />
+                <ScalarProperty Name="操作人员" ColumnName="操作人员" />
+                <ScalarProperty Name="商品编号" ColumnName="商品编号" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customer">
+            <EntityTypeMapping TypeName="testModel1.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="客户电话" ColumnName="客户电话" />
+                <ScalarProperty Name="客户全称" ColumnName="客户全称" />
+                <ScalarProperty Name="会员" ColumnName="会员" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goods">
+            <EntityTypeMapping TypeName="testModel1.goods">
+              <MappingFragment StoreEntitySet="goods">
+                <ScalarProperty Name="商品编号" ColumnName="商品编号" />
+                <ScalarProperty Name="商品名称" ColumnName="商品名称" />
+                <ScalarProperty Name="商品价格" ColumnName="商品价格" />
+                <ScalarProperty Name="供应商电话" ColumnName="供应商电话" />
+                <ScalarProperty Name="商品数量" ColumnName="商品数量" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuList">
+            <EntityTypeMapping TypeName="testModel1.MenuList">
+              <MappingFragment StoreEntitySet="MenuList">
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="MenuEnName" ColumnName="MenuEnName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Register">
+            <EntityTypeMapping TypeName="testModel1.Register">
+              <MappingFragment StoreEntitySet="Register">
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="return">
+            <EntityTypeMapping TypeName="testModel1.return">
+              <MappingFragment StoreEntitySet="return">
+                <ScalarProperty Name="退货编号" ColumnName="退货编号" />
+                <ScalarProperty Name="供应商电话" ColumnName="供应商电话" />
+                <ScalarProperty Name="退货时间" ColumnName="退货时间" />
+                <ScalarProperty Name="操作人员" ColumnName="操作人员" />
+                <ScalarProperty Name="商品编号" ColumnName="商品编号" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sale">
+            <EntityTypeMapping TypeName="testModel1.sale">
+              <MappingFragment StoreEntitySet="sale">
+                <ScalarProperty Name="售货编号" ColumnName="售货编号" />
+                <ScalarProperty Name="客户电话" ColumnName="客户电话" />
+                <ScalarProperty Name="销售时间" ColumnName="销售时间" />
+                <ScalarProperty Name="操作人员" ColumnName="操作人员" />
+                <ScalarProperty Name="商品编号" ColumnName="商品编号" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="salesreturn">
+            <EntityTypeMapping TypeName="testModel1.salesreturn">
+              <MappingFragment StoreEntitySet="salesreturn">
+                <ScalarProperty Name="销售退货编号" ColumnName="销售退货编号" />
+                <ScalarProperty Name="客户电话" ColumnName="客户电话" />
+                <ScalarProperty Name="退货时间" ColumnName="退货时间" />
+                <ScalarProperty Name="操作人员" ColumnName="操作人员" />
+                <ScalarProperty Name="商品编号" ColumnName="商品编号" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="supplier">
+            <EntityTypeMapping TypeName="testModel1.supplier">
+              <MappingFragment StoreEntitySet="supplier">
+                <ScalarProperty Name="供应商电话" ColumnName="供应商电话" />
+                <ScalarProperty Name="供应商全称" ColumnName="供应商全称" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="testModel1.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kucun">
+            <EntityTypeMapping TypeName="testModel1.kucun">
+              <MappingFragment StoreEntitySet="kucun">
+                <ScalarProperty Name="商品名称" ColumnName="商品名称" />
+                <ScalarProperty Name="数量" ColumnName="数量" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
